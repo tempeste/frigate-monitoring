@@ -1,0 +1,10 @@
+# .gitignore content
+media/
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.env
+.vacuum
+.timeline
+config/config.yml

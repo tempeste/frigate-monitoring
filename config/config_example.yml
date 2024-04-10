@@ -1,0 +1,58 @@
+mqtt:
+  enabled: false
+
+audio:
+  # Optional: Enable audio events (default: shown below)
+  enabled: true
+
+objects:
+  # Optional: list of objects to track from labelmap.txt (default: shown below)
+  track:
+  - person
+  - cat
+  - dog
+  - motorcycle
+
+cameras:
+  front_porch: # Adjust with your actual camera name
+    enabled: true
+    ffmpeg:
+      inputs:
+      - path: rtsp://USER:PASSWORD@CAMERA_IP:PORT/PATH_TO_STREAM
+        roles:
+        - audio
+        - detect
+        - record
+      hwaccel_args: preset-vaapi
+    detect:
+      enabled: true
+      width: 1280 # Adjust to your stream's resolution
+      height: 720
+    record:
+      enabled: true
+      events:
+        required_zones:
+        - outer
+        retain:
+          default: 3 # Number of days to retain event recordings
+          objects:
+            person: 7 # Retain recordings where a person is detected for 15 days
+    snapshots:
+      enabled: true
+      required_zones:
+      - outer
+      retain:
+        default: 5 # Number of days to retain snapshots
+        objects:
+          person: 10 # Retain snapshots where a person is detected for 15 days
+    motion:
+      mask:
+      - 256,209,429,106,785,94,1164,149,1280,249,1280,0,956,0,596,0,351,0,0,0,0,316
+
+    zones:
+      outer:
+        coordinates: 927,109,588,75,258,70,247,277,1087,295,1175,153
+
+detectors:
+  cpu1:
+    type: cpu
