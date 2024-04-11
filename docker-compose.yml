@@ -11,7 +11,7 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128 # For Intel hardware acceleration
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./config:/config 
+      - ./config:/config
       - ./media/frigate:/media/frigate
       - type: tmpfs
         target: /tmp/cache
@@ -24,3 +24,13 @@ services:
       - "8555:8555/udp" # WebRTC over UDP
     environment:
       FRIGATE_RTSP_PASSWORD: "${FRIGATE_RTSP_PASSWORD}"
+
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frigate
+    ports:
+      - "8080:8080"
